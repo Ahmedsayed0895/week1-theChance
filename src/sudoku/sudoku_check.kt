@@ -200,23 +200,24 @@ fun sudokuChecker(sudokuBoard: List<List<Char>>): Boolean {
 
 //check row
     for (row in sudokuBoard) {
+
         if (row.size != 9) {
             return false
         }
         val seen = mutableListOf<Char>()
 
+
         row.forEach { currentChar ->
-            if (currentChar != '-') {
-                if (currentChar in seen) {
-                    return false
-                } else {
-                    seen.add(currentChar)
-                }
+            if (currentChar !in '1'..'9' && currentChar != '-') {
+                return false
+            }
+
+            if (currentChar != '-' && !seen.add(currentChar)) {
+                return false
             }
         }
-
-
     }
+
 
     //check col
     for (col in sudokuBoard.indices) {
@@ -233,14 +234,13 @@ fun sudokuChecker(sudokuBoard: List<List<Char>>): Boolean {
         }
     }
 //check grids
-    for (startRow in 0..6 step 3) {
-        for (startCol in 0..6 step 3) {
+    for (rowBeginning in 0..6 step 3) {
+        for (colBeginning in 0..6 step 3) {
             val seen = mutableListOf<Char>()
 
-            for (row in startRow until startRow step 3) {
-                for (col in startCol until startCol step 3) {
+            for (row in rowBeginning until rowBeginning + 3) {
+                for (col in colBeginning until colBeginning + 3) {
                     val currentChar = sudokuBoard[row][col]
-
                     if (currentChar != '-') {
                         if (currentChar in seen) {
                             return false
